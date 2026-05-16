@@ -1,0 +1,27 @@
+﻿# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.pytest_cache
+pytest-cache-files-*/
+.venv/
+venv/
+.env
+.idea/
+.vscode/
+.DS_Store
+
+# Spark runtime
+/data/streaming/checkpoints/*
+!/data/streaming/checkpoints/.gitkeep
+!/data/streaming/checkpoints/heart-records/.gitkeep
+/data/streaming/processed/*.log
+logs/
+*.log
+
+# Build artefacts
+build/
+dist/
+*.egg-info/

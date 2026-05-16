@@ -1,0 +1,15 @@
+# Core data and notebook dependencies.
+pandas>=2.0
+jupyter>=1.0
+notebook>=7.0
+pyspark==4.0.1
+pymongo>=4.0
+python-dotenv>=1.0
+requests>=2.0
+confluent-kafka>=2.5.0
+
+# API layer.
+flask>=3.0
+
+# Local validation.
+pytest>=8.0

@@ -1,38 +1,206 @@
-# KafkaMed
+# KafkaMed - Plataforma de monitoreo cardiaco en streaming
 
-KafkaMed is the independent clinical streaming repository built from the
-validated Kafka + Spark pattern. The project keeps the proven infrastructure
-shape, but the sentiment domain is not part of this codebase anymore.
+KafkaMed es una plataforma de monitoreo cardiaco en streaming construida con
+Apache Kafka y Apache Spark Structured Streaming. El proyecto simula la
+publicacion continua de registros clinicos y su procesamiento en tiempo casi
+real para detectar eventos de interes a partir de mensajes estructurados en
+Kafka.
 
-## Validated phases
+Este repositorio nacio reutilizando la arquitectura ya validada en
+SentimentStream, pero KafkaMed es un proyecto independiente y no contiene el
+dominio de sentimientos.
 
-- Kafka broker in Docker.
-- Clinical CSV producer that publishes JSON messages to `heart-records`.
-- Spark Structured Streaming consumer that reads Kafka and prints parsed rows.
+## 1. Descripcion general
 
-## Structure
+KafkaMed simula el flujo de registros clinicos de pacientes con riesgo de falla
+cardiaca. Un productor lee un CSV local, publica cada fila como JSON en un
+topic Kafka y un consumidor Spark Structured Streaming lee esos mensajes para
+mostrar los registros parseados en consola.
 
-- `kafka/`: Kafka producer for the heart failure dataset.
-- `spark_processing/`: Spark session helpers and the streaming consumer.
-- `docker/`: Dockerfiles used by the streaming runtime.
-- `docs/`: architecture notes and validation reports.
-- `tests/`: structure checks for the standalone repository.
+La meta final del proyecto es evolucionar ese flujo hacia una arquitectura
+completa de extremo a extremo con persistencia, API y visualizacion.
 
-## Quick start
+## 2. Contexto academico
+
+KafkaMed corresponde a una actividad de Big Data orientada a construir una
+plataforma de streaming con componentes reales de industria.
+
+El proyecto reutiliza la arquitectura probada en SentimentStream como base
+tecnica, pero el repositorio actual es independiente y esta enfocado en el
+dominio clinico.
+
+## 3. Objetivo
+
+El objetivo es implementar un pipeline de streaming que:
+
+1. lea registros clinicos desde un CSV,
+2. publique eventos en Kafka,
+3. consuma esos eventos con Spark Structured Streaming,
+4. y deje lista la base para continuar con persistencia, API y dashboard.
+
+## 4. Arquitectura actual
+
+Flujo validado hasta esta etapa:
+
+```text
+CSV clínico -> Kafka Producer -> Topic heart-records -> Spark Structured Streaming -> Consola/logs
+```
+
+### Evidencia de Fases validadas
+
+- Fase 1: Kafka levanta en Docker y `producer.py` publica mensajes JSON reales.
+- Fase 2: Spark Structured Streaming lee mensajes reales desde Kafka y los
+  muestra en consola.
+
+## 5. Arquitectura objetivo
+
+La arquitectura final esperada es:
+
+```text
+CSV clínico -> Kafka Producer -> Kafka -> Spark Structured Streaming -> MongoDB -> Flask API -> Power BI
+```
+
+Las fases de MongoDB, Flask API y Power BI aun no estan implementadas en este
+repositorio.
+
+## 6. Tecnologias
+
+- Python
+- Apache Kafka
+- Apache Spark / PySpark Structured Streaming
+- Docker Compose
+- MongoDB, como fase pendiente
+- Flask API, como fase pendiente
+- Power BI, como fase pendiente
+
+## 7. Estructura del repositorio
+
+- `kafka/`: productor Kafka para el dataset cardiaco.
+- `spark_processing/`: helpers de Spark, esquema, configuracion y jobs de
+  streaming.
+- `docker/`: Dockerfiles usados por el runtime de streaming.
+- `data/`: dataset local de prueba y artefactos de ejecucion.
+- `docs/`: documentacion tecnica y reportes de validacion.
+- `tests/`: pruebas de estructura y validacion basica del repositorio.
+
+## 8. Dataset
+
+Este repositorio usa un extracto local del dataset **Heart Failure Prediction**
+para validacion inicial.
+
+El archivo disponible en el proyecto es:
+
+- `data/raw/heart_failure_prediction.csv`
+
+Nota: este archivo se usa como base de alistamiento y validacion local. No se
+afirma aqui que sea la version completa del dataset original de Kaggle.
+
+## 9. Variables de entorno
+
+### Productor Kafka
+
+- `KAFKA_BOOTSTRAP_SERVERS`
+- `KAFKA_TOPIC`
+- `HEART_DATASET_PATH`
+- `PRODUCER_INTERVAL_SECONDS`
+- `PRODUCER_LIMIT`
+
+### Spark Structured Streaming
+
+- `SPARK_CHECKPOINT_LOCATION`
+- `SPARK_STARTING_OFFSETS`
+- `SPARK_JARS_PACKAGES`
+- `STREAM_TRIGGER_MODE`
+- `STREAM_TIMEOUT_SECONDS`
+- `KAFKA_BOOTSTRAP_SERVERS`
+- `KAFKA_TOPIC`
+
+## 10. Requisitos previos
+
+- Python 3.12 o superior compatible con el entorno local.
+- Docker Desktop.
+- Docker Compose.
+- Instalacion de dependencias con:
+
+```powershell
+pip install -r requirements.txt
+```
+
+## 11. Instalacion
+
+1. Clonar o ubicar el repositorio local.
+2. Instalar dependencias:
+
+```powershell
+pip install -r requirements.txt
+```
+
+3. Verificar la configuracion del proyecto:
+
+```powershell
+docker compose config
+```
+
+## 12. Ejecucion
+
+### Levantar Kafka
 
 ```powershell
 docker compose up -d kafka
+```
+
+### Publicar mensajes de prueba
+
+```powershell
 python kafka\producer.py --limit 5
+```
+
+### Ejecutar el consumidor Spark Structured Streaming
+
+```powershell
 docker compose --profile processing run --rm spark-heart-stream
 ```
 
-## Validation commands
+## 13. Validaciones tecnicas
+
+### Sintaxis y pruebas basicas
 
 ```powershell
 python -m py_compile kafka\producer.py
 python -m py_compile spark_processing\src\heart_schema.py
 python -m py_compile spark_processing\src\kafka_config.py
 python -m py_compile spark_processing\jobs\process_heart_records_stream.py
+python -m py_compile spark_processing\jobs\smoke_spark_session.py
 python -m pytest tests\test_project_structure.py
 docker compose config
 ```
+
+## 14. Estado actual de fases
+
+| Fase | Estado |
+|---|---|
+| Fase 1: Kafka + Producer | Validada |
+| Fase 2: Spark leyendo Kafka | Validada |
+| Fase 3: Spark -> MongoDB | Pendiente |
+| Fase 4: Modelo ML | Pendiente |
+| Fase 5: Flask API | Pendiente |
+| Fase 6: Power BI | Pendiente |
+
+## 15. Documentacion tecnica
+
+- [Arquitectura KafkaMed](docs/arquitectura/arquitectura_kafkamed.md)
+- [Reporte Fase 1 - Kafka y productor](docs/pruebas/reporte_fase_1_kafka_producer.md)
+- [Reporte Fase 2 - Spark Structured Streaming y Kafka](docs/pruebas/reporte_fase_2_spark_kafka.md)
+- [Reporte de separacion de repositorio](docs/pruebas/reporte_separacion_repositorio.md)
+- [Reporte de publicacion en GitHub](docs/pruebas/reporte_publicacion_github.md)
+
+## 16. Proximo paso
+
+La siguiente fase es persistir en MongoDB los registros leidos por Spark,
+manteniendo aun fuera del alcance el modelo ML y la API clinica.
+
+## 17. Nota sobre SentimentStream
+
+SentimentStream fue usado como referencia arquitectonica y de buenas practicas
+de orquestacion, pero KafkaMed ya es un proyecto independiente, con nombre,
+repositorio y alcance propios.

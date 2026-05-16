@@ -85,15 +85,22 @@ repositorio.
 
 ## 8. Dataset
 
-Este repositorio usa un extracto local del dataset **Heart Failure Prediction**
-para validacion inicial.
+Este repositorio usa el dataset **Heart Failure Prediction** para validacion
+local del pipeline de ML.
 
 El archivo disponible en el proyecto es:
 
 - `data/raw/heart_failure_prediction.csv`
 
-Nota: este archivo se usa como base de alistamiento y validacion local. No se
-afirma aqui que sea la version completa del dataset original de Kaggle.
+Estado actual del archivo:
+
+- Filas: `918`
+- Columnas: `12`
+- Distribucion de `HeartDisease`: `1 -> 508`, `0 -> 410`
+
+Nota: el proyecto conservo inicialmente un extracto de 5 filas para validar el
+flujo tecnico. El entrenamiento actual ya se ejecuto con el dataset completo
+incorporado en el repositorio para obtener metricas mas representativas.
 
 ## 9. Variables de entorno
 
@@ -182,7 +189,7 @@ docker compose config
 | Fase 1: Kafka + Producer | Validada |
 | Fase 2: Spark leyendo Kafka | Validada |
 | Fase 3: Spark -> MongoDB | Pendiente |
-| Fase 4: Modelo ML | Validada localmente |
+| Fase 4: Modelo ML | Validada con dataset completo |
 | Fase 5: Flask API | Pendiente |
 | Fase 6: Power BI | Pendiente |
 
@@ -194,6 +201,7 @@ docker compose config
 - [Reporte de separacion de repositorio](docs/pruebas/reporte_separacion_repositorio.md)
 - [Reporte de publicacion en GitHub](docs/pruebas/reporte_publicacion_github.md)
 - [Reporte Fase 4 - Modelo ML de riesgo cardiaco](docs/pruebas/reporte_fase_4_modelo_ml.md)
+- [Reporte Fase 4.5 - Dataset completo y reentrenamiento](docs/pruebas/reporte_fase_4_5_dataset_completo_ml.md)
 
 ## 16. Proximo paso
 

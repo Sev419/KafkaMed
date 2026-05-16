@@ -1,12 +1,12 @@
 # KafkaMed heart disease model report
 
 ## Dataset
-- Rows: 5
+- Rows: 918
 - Columns: Age, RestingBP, Cholesterol, FastingBS, MaxHR, Oldpeak, Sex, ChestPainType, RestingECG, ExerciseAngina, ST_Slope
-- Target distribution: {1: 3, 0: 2}
-- Train rows: 3
-- Test rows: 2
-- Test size: 0.4
+- Target distribution: {1: 508, 0: 410}
+- Train rows: 734
+- Test rows: 184
+- Test size: 0.2
 
 ## Model
 - LogisticRegression
@@ -14,11 +14,11 @@
 - class_weight=balanced
 
 ## Metrics
-- Accuracy: 0.0
-- Precision: 0.0
-- Recall: 0.0
-- F1: 0.0
-- ROC AUC: 0.0
+- Accuracy: 0.8967391304347826
+- Precision: 0.8878504672897196
+- Recall: 0.9313725490196079
+- F1: 0.9090909090909091
+- ROC AUC: 0.9295791487326638
 
 ## Limitations
 - The local CSV extract is very small, so the metrics are only a technical validation of the pipeline.

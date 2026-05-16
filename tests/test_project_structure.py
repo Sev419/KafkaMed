@@ -9,6 +9,10 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_required_directories_exist():
     required = [
         "kafka",
+        "ml",
+        "ml/models",
+        "ml/metrics",
+        "ml/reports",
         "spark_processing",
         "data",
         "docker",
@@ -23,6 +27,10 @@ def test_required_entrypoints_exist():
     required = [
         "kafka/__init__.py",
         "kafka/producer.py",
+        "ml/__init__.py",
+        "ml/config.py",
+        "ml/train_heart_model.py",
+        "ml/predict_heart_risk.py",
         "spark_processing/src/__init__.py",
         "spark_processing/src/heart_schema.py",
         "spark_processing/src/kafka_config.py",
@@ -41,6 +49,7 @@ def test_required_entrypoints_exist():
         "docs/pruebas/reporte_fase_1_kafka_producer.md",
         "docs/pruebas/reporte_fase_2_spark_kafka.md",
         "docs/pruebas/reporte_separacion_repositorio.md",
+        "docs/pruebas/reporte_fase_4_modelo_ml.md",
         "data/raw/heart_failure_prediction.csv",
     ]
     missing = [path for path in required if not (ROOT / path).exists()]

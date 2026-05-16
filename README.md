@@ -182,7 +182,7 @@ docker compose config
 | Fase 1: Kafka + Producer | Validada |
 | Fase 2: Spark leyendo Kafka | Validada |
 | Fase 3: Spark -> MongoDB | Pendiente |
-| Fase 4: Modelo ML | Pendiente |
+| Fase 4: Modelo ML | Validada localmente |
 | Fase 5: Flask API | Pendiente |
 | Fase 6: Power BI | Pendiente |
 
@@ -193,11 +193,12 @@ docker compose config
 - [Reporte Fase 2 - Spark Structured Streaming y Kafka](docs/pruebas/reporte_fase_2_spark_kafka.md)
 - [Reporte de separacion de repositorio](docs/pruebas/reporte_separacion_repositorio.md)
 - [Reporte de publicacion en GitHub](docs/pruebas/reporte_publicacion_github.md)
+- [Reporte Fase 4 - Modelo ML de riesgo cardiaco](docs/pruebas/reporte_fase_4_modelo_ml.md)
 
 ## 16. Proximo paso
 
-La siguiente fase es persistir en MongoDB los registros leidos por Spark,
-manteniendo aun fuera del alcance el modelo ML y la API clinica.
+La siguiente fase es integrar el modelo de riesgo cardiaco al flujo de streaming
+sin tocar aun la API clinica ni Power BI.
 
 ## 17. Nota sobre SentimentStream
 

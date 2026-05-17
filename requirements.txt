@@ -1,4 +1,4 @@
-# Core data and notebook dependencies.
+﻿# Core data and notebook dependencies.
 pandas>=2.0
 jupyter>=1.0
 notebook>=7.0
@@ -7,7 +7,7 @@ pymongo>=4.0
 python-dotenv>=1.0
 requests>=2.0
 confluent-kafka>=2.5.0
-scikit-learn>=1.5.0
+scikit-learn==1.5.2
 joblib>=1.4.2
 
 # API layer.

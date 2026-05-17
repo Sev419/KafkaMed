@@ -37,12 +37,11 @@ def load_model(model_path: Path = MODEL_PATH):
     return load(model_path)
 
 
-def predict_heart_risk(record: dict[str, Any], model_path: Path = MODEL_PATH) -> dict[str, Any]:
+def predict_heart_risk_with_model(record: dict[str, Any], model) -> dict[str, Any]:
     missing = [column for column in FEATURE_COLUMNS if column not in record]
     if missing:
         raise ValueError(f"Missing clinical fields for inference: {missing}")
 
-    model = load_model(model_path)
     features = pd.DataFrame([record], columns=FEATURE_COLUMNS)
     prediction = int(model.predict(features)[0])
     probabilities = model.predict_proba(features)[0]
@@ -55,6 +54,16 @@ def predict_heart_risk(record: dict[str, Any], model_path: Path = MODEL_PATH) ->
         "prediction_label": "risk" if prediction == 1 else "no_risk",
         "probability": probability,
     }
+
+
+def predict_heart_risk(record: dict[str, Any], model_path: Path = MODEL_PATH) -> dict[str, Any]:
+    model = load_model(model_path)
+    return predict_heart_risk_with_model(record, model)
+
+
+def predict_heart_risk_batch(records: list[dict[str, Any]], model_path: Path = MODEL_PATH) -> list[dict[str, Any]]:
+    model = load_model(model_path)
+    return [predict_heart_risk_with_model(record, model) for record in records]
 
 
 def load_sample_record(dataset_path: Path = DATASET_PATH) -> dict[str, Any]:

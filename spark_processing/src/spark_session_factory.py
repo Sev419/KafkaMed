@@ -4,9 +4,12 @@ from __future__ import annotations
 
 import logging
 import os
+from tempfile import gettempdir
 from pathlib import Path
 import sys
 from typing import Any
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def configure_python_for_pyspark(logger: logging.Logger | None = None) -> str:
@@ -18,6 +21,29 @@ def configure_python_for_pyspark(logger: logging.Logger | None = None) -> str:
         logger.info("PYSPARK_PYTHON=%s", python_executable)
         logger.info("PYSPARK_DRIVER_PYTHON=%s", python_executable)
     return python_executable
+
+
+def configure_temp_dirs(project_path: Path, logger: logging.Logger | None = None) -> Path:
+    """Ensure PySpark and Python use a stable temp directory."""
+    temp_dir = project_path / "data" / "streaming" / "tmp"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+
+    current_temp = Path(os.environ.get("TMP", gettempdir()))
+    if not current_temp.exists():
+        if logger:
+            logger.warning(
+                "El temp actual de Windows no existe: %s. Se usara un temp local estable: %s",
+                current_temp,
+                temp_dir,
+            )
+    os.environ["TMP"] = str(temp_dir)
+    os.environ["TEMP"] = str(temp_dir)
+    os.environ["TMPDIR"] = str(temp_dir)
+    if logger:
+        logger.info("TMP=%s", temp_dir)
+        logger.info("TEMP=%s", temp_dir)
+        logger.info("TMPDIR=%s", temp_dir)
+    return temp_dir
 
 
 def warn_if_windows_path_has_spaces(project_path: Path, logger: logging.Logger) -> None:
@@ -51,6 +77,7 @@ def create_spark_session(
     extra_packages: str | None = None,
 ):
     """Create a small local SparkSession with conservative settings."""
+    configure_temp_dirs(PROJECT_ROOT, logger)
     spark_master = os.environ.get("SPARK_MASTER", "local[1]")
     shuffle_partitions = os.environ.get("SPARK_SHUFFLE_PARTITIONS", "1")
     default_parallelism = os.environ.get("SPARK_DEFAULT_PARALLELISM", "1")

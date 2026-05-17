@@ -112,5 +112,45 @@ services:
     command: >
       sh -c "python spark_processing/jobs/process_heart_records_to_mongo.py"
 
+  spark-heart-ml-mongo:
+    build:
+      context: .
+      dockerfile: docker/spark/Dockerfile
+    container_name: kafkamed-spark-heart-ml-mongo
+    profiles:
+      - processing
+    env_file:
+      - .env.example
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC: heart-records
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB_NAME: kafkamed_db
+      MONGO_COLLECTION: heart_predictions
+      MONGO_PREDICTIONS_COLLECTION: heart_predictions
+      MODEL_PATH: ml/models/heart_risk_model.joblib
+      MODEL_VERSION: logistic_regression_complete_dataset_v1
+      SPARK_CHECKPOINT_LOCATION: /tmp/kafkamed/checkpoints/heart-predictions
+      SPARK_STARTING_OFFSETS: earliest
+      SPARK_JARS_PACKAGES: org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.1
+      STREAM_TRIGGER_MODE: availableNow
+      STREAM_TIMEOUT_SECONDS: "120"
+      SPARK_MASTER: local[1]
+      SPARK_SHUFFLE_PARTITIONS: "1"
+      SPARK_DEFAULT_PARALLELISM: "1"
+      SPARK_UI_ENABLED: "false"
+      SPARK_DRIVER_BIND_ADDRESS: 127.0.0.1
+      SPARK_DRIVER_HOST: 127.0.0.1
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      kafka:
+        condition: service_started
+      mongo:
+        condition: service_healthy
+    command: >
+      sh -c "python spark_processing/jobs/process_heart_records_with_ml_to_mongo.py"
+
 volumes:
   mongo_data:

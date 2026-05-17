@@ -17,6 +17,7 @@ venv/
 /data/streaming/checkpoints/*
 !/data/streaming/checkpoints/.gitkeep
 !/data/streaming/checkpoints/heart-records/.gitkeep
+/data/streaming/tmp/
 /data/streaming/processed/*.log
 logs/
 *.log

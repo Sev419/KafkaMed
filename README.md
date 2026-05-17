@@ -6,7 +6,7 @@ Este repositorio nacio reutilizando la arquitectura ya validada en SentimentStre
 
 ## 1. Descripcion general
 
-KafkaMed simula el flujo de registros clinicos de pacientes con riesgo de falla cardiaca. Un productor lee un CSV local, publica cada fila como JSON en un topic Kafka y consumidores Spark Structured Streaming procesan esos mensajes para validacion en consola, persistencia en MongoDB e inferencia con un modelo ML de riesgo cardiaco.
+KafkaMed simula el flujo de registros clinicos de pacientes con riesgo de falla cardiaca. Un productor lee un CSV local, publica cada fila como JSON en un topic Kafka y consumidores Spark Structured Streaming procesan esos mensajes para validacion en consola, persistencia en MongoDB e inferencia con un modelo ML de riesgo cardiaco. Una API Flask clinica expone los registros y predicciones almacenados en MongoDB.
 
 La meta final del proyecto es evolucionar ese flujo hacia una arquitectura completa de extremo a extremo con API clinica y dashboard.
 
@@ -42,6 +42,7 @@ CSV clinico -> Kafka Producer -> Topic heart-records -> Spark Structured Streami
 - Fase 3: Spark Structured Streaming persiste registros clinicos en MongoDB.
 - Fase 4: El modelo ML de riesgo cardiaco fue entrenado con el dataset completo.
 - Fase 5: Spark aplica inferencia ML en streaming y guarda predicciones en MongoDB.
+- Fase 6: Flask API consulta MongoDB y expone endpoints clinicos.
 
 ## 5. Arquitectura objetivo
 
@@ -51,7 +52,7 @@ La arquitectura final esperada es:
 CSV clinico -> Kafka Producer -> Kafka -> Spark Structured Streaming -> ML -> MongoDB -> Flask API -> Power BI
 ```
 
-La persistencia en MongoDB y la inferencia ML en streaming ya fueron validadas. Flask API y Power BI siguen como fases pendientes.
+La persistencia en MongoDB, la inferencia ML en streaming y la API Flask ya fueron validadas. Power BI sigue como fase pendiente.
 
 ## 6. Tecnologias
 
@@ -61,7 +62,7 @@ La persistencia en MongoDB y la inferencia ML en streaming ya fueron validadas. 
 - Docker Compose
 - MongoDB
 - scikit-learn / joblib
-- Flask API, como fase pendiente
+- Flask API
 - Power BI, como fase pendiente
 
 ## 7. Estructura del repositorio
@@ -177,6 +178,20 @@ docker compose --profile processing run --rm spark-heart-mongo
 docker compose --profile processing run --rm spark-heart-ml-mongo
 ```
 
+### Levantar API Flask clinica
+
+```powershell
+docker compose up -d api
+```
+
+Endpoints disponibles:
+
+- `GET /health`
+- `GET /patients`
+- `GET /predictions`
+- `GET /stats`
+- `GET /risk-summary`
+
 ## 13. Validaciones tecnicas
 
 ### Sintaxis y pruebas basicas
@@ -209,7 +224,7 @@ docker compose exec mongo mongosh --quiet --eval "db.getSiblingDB('kafkamed_db')
 | Fase 3: Spark -> MongoDB | Validada |
 | Fase 4: Modelo ML | Validada con dataset completo |
 | Fase 5: Spark -> ML -> MongoDB | Validada |
-| Fase 6: Flask API | Pendiente |
+| Fase 6: Flask API | Validada |
 | Fase 7: Power BI | Pendiente |
 
 ## 15. Documentacion tecnica
@@ -221,12 +236,13 @@ docker compose exec mongo mongosh --quiet --eval "db.getSiblingDB('kafkamed_db')
 - [Reporte Fase 4 - Modelo ML de riesgo cardiaco](docs/pruebas/reporte_fase_4_modelo_ml.md)
 - [Reporte Fase 4.5 - Dataset completo y reentrenamiento](docs/pruebas/reporte_fase_4_5_dataset_completo_ml.md)
 - [Reporte Fase 5 - ML en streaming hacia MongoDB](docs/pruebas/reporte_fase_5_ml_streaming_mongo.md)
+- [Reporte Fase 6 - API Flask clinica](docs/pruebas/reporte_fase_6_api_flask.md)
 - [Reporte de separacion de repositorio](docs/pruebas/reporte_separacion_repositorio.md)
 - [Reporte de publicacion en GitHub](docs/pruebas/reporte_publicacion_github.md)
 
 ## 16. Proximo paso
 
-La siguiente fase es implementar la API Flask clinica para exponer los registros y predicciones almacenados en MongoDB. Power BI sigue pendiente hasta validar la capa API.
+La siguiente fase es construir el dashboard Power BI consumiendo la API Flask, no MongoDB directamente.
 
 ## 17. Nota sobre SentimentStream
 

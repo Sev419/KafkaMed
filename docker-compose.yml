@@ -43,6 +43,24 @@ services:
       retries: 10
       start_period: 10s
 
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    container_name: kafkamed-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB_NAME: kafkamed_db
+      MONGO_PREDICTIONS_COLLECTION: heart_predictions
+      API_HOST: 0.0.0.0
+      API_PORT: "8000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
   spark-heart-stream:
     build:
       context: .

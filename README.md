@@ -56,7 +56,7 @@ Dataset clinico
 | Metrica | Valor |
 |---|---:|
 | accuracy | `0.8967` |
-| precision | `0.8879` |
+| accuracy | `0.8879` |
 | recall | `0.9314` |
 | f1 | `0.9091` |
 | roc_auc | `0.9296` |

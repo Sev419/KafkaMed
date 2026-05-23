@@ -41,6 +41,26 @@ Nombres esperados:
 - `docs/pruebas/imagenes/powerbi_predicciones.png`
 - `docs/pruebas/imagenes/powerbi_analisis_clinico.png`
 - `docs/pruebas/imagenes/powerbi_monitoreo.png`
+- `docs/pruebas/imagenes/powerbi_api_datos.png`
+- `docs/pruebas/imagenes/powerbi_modelo_datos.png`
+
+Las imagenes originales del dashboard estan en:
+
+```text
+dashboard/powerbi/
+```
+
+Las evidencias oficiales usadas por el README principal estan copiadas en:
+
+```text
+docs/pruebas/imagenes/
+```
+
+Si se desea versionar el archivo de Power BI, guardarlo como:
+
+```text
+dashboard/powerbi/KafkaMed_Dashboard.pbix
+```
 
 ## Visualizaciones sugeridas
 - Tarjetas KPI: total, risk, no_risk, probabilidad promedio.

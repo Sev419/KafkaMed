@@ -39,7 +39,7 @@ Dataset clinico
 | 4.5 | Reentrenamiento con dataset completo | Validado |
 | 5 | Spark + ML + MongoDB | Validado |
 | 6 | API Flask clinica | Validado |
-| 7 | Power BI | Dashboard creado por el usuario; evidencia visual pendiente de adjuntar al repo |
+| 7 | Power BI | Dashboard creado; evidencias visuales adjuntas |
 
 ## Dataset
 
@@ -79,7 +79,7 @@ Endpoints:
 
 ## Dashboard Power BI
 
-El dashboard consume la API Flask y debe visualizar:
+El dashboard consume la API Flask y visualiza:
 
 - total de registros;
 - distribucion `risk` / `no_risk`;
@@ -87,16 +87,17 @@ El dashboard consume la API Flask y debe visualizar:
 - analisis clinico por edad, sexo y variables cardiacas;
 - tabla de predicciones.
 
-Imagen pendiente: `docs/pruebas/imagenes/powerbi_resumen.png`
+![Resumen Power BI](docs/pruebas/imagenes/powerbi_resumen.png)
 
-Archivos esperados:
+![Predicciones Power BI](docs/pruebas/imagenes/powerbi_predicciones.png)
 
-- Power BI: `dashboard/powerbi/KafkaMed_Dashboard.pbix`
-- Capturas:
-  - `docs/pruebas/imagenes/powerbi_resumen.png`
-  - `docs/pruebas/imagenes/powerbi_predicciones.png`
-  - `docs/pruebas/imagenes/powerbi_analisis_clinico.png`
-  - `docs/pruebas/imagenes/powerbi_monitoreo.png`
+![Analisis Clinico Power BI](docs/pruebas/imagenes/powerbi_analisis_clinico.png)
+
+![Monitoreo Power BI](docs/pruebas/imagenes/powerbi_monitoreo.png)
+
+![Datos API Power BI](docs/pruebas/imagenes/powerbi_api_datos.png)
+
+![Modelo de datos Power BI](docs/pruebas/imagenes/powerbi_modelo_datos.png)
 
 ## Comandos para demo
 
